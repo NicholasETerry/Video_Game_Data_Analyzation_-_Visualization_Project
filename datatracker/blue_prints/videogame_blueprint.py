@@ -16,8 +16,7 @@ def test():
         if game.platform == "Wii" and game.year == 2007:
             game_collection.append(game) # add game to list if platform is Wii and year 2007
 
-
-    return str(game_collection) # return the collection of games
+    return render_template('sample/index.html', game_collection=game_collection)
 
 
 @bp.route('/invest') # see a data visualization of which video game console is best to invest in based on the number
