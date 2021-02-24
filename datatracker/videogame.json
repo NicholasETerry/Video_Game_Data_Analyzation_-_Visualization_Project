@@ -1,0 +1,15 @@
+{
+    "_id": "5faac562db090e1a5c2dea0b",
+    "rank": 2,
+    "name": "Super Mario Bros.",
+    "platform": "NES",
+    "year": 1985,
+    "genre": "Platform",
+    "publisher": "Nintendo",
+    "naSales": 29.08,
+    "euSales": 3.58,
+    "jpSales": 6.81,
+    "otherSales": 0.77,
+    "globalSales": 40.24,
+    "__v": 0
+}
