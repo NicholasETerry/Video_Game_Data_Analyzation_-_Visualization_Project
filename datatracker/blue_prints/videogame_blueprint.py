@@ -7,34 +7,23 @@ bp = Blueprint('videogame_blueprint', __name__)
 
 response = requests.get('https://api.dccresource.com/api/games')
 games = json.loads(response.content, object_hook=lambda d: SimpleNamespace(**d))
-invest = Invest.invest_results(games)
+invest = Invest.invest_results(games)  # will not let me iterate over this
+investing = invest                     # but I can iterate over this
 
 @bp.route('/home')
 def test():
 
-    invest_collection = []
     game_collection = []
-    platform_collection = [] # create empty list for unique platforms
-    for game in games:
-        if str(game.year) != "None":
-            game_collection.append(game)
+    platform_collection = []
 
+    testg = len(games)  # test data - all games - returns 16598
+    testgc = len(game_collection)  # test data - games that have years -  returns 16327
 
-    g = len(games)  # test data - all games - returns 16598
-    gg = len(game_collection)  # test data - games that have years -  returns 16327
-
-    print(games[0].platform)
-    for game in game_collection: # this is appending only unique platforms to platform_collection list
-        if game.platform not in platform_collection and game.year > 2012:
+    for game in investing: # this is appending only unique platforms to platform_collection list
+        if game.platform not in platform_collection:
             platform_collection.append(game.platform)
 
     print(platform_collection)
-
-    for game in games:
-        if game.platform == "SAT":
-            game_collection.append(game) # add game to list if platform is Wii and year 2007
-
-
 
     return render_template('sample/index.html', game_collection=game_collection, platform_collection=platform_collection)
     # 'sample/index.html refers to the folder then the .html'
