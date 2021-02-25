@@ -13,12 +13,21 @@ invest = Invest.invest_results(games)
 def test():
 
     invest_collection = []
-    game_collection = [] # create empty list
+    game_collection = []
     platform_collection = [] # create empty list for unique platforms
+    for game in games:
+        if str(game.year) != "None":
+            game_collection.append(game)
+
+
+    g = len(games)  # test data - all games - returns 16598
+    gg = len(game_collection)  # test data - games that have years -  returns 16327
+
     print(games[0].platform)
-    for game in games: # this is appending only unique platforms to platform_collection list
-        if game.platform not in platform_collection:
+    for game in game_collection: # this is appending only unique platforms to platform_collection list
+        if game.platform not in platform_collection and game.year > 2012:
             platform_collection.append(game.platform)
+
     print(platform_collection)
 
     for game in games:
@@ -27,7 +36,7 @@ def test():
 
 
 
-    return render_template('sample/index.html', game_collection=game_collection)
+    return render_template('sample/index.html', game_collection=game_collection, platform_collection=platform_collection)
     # 'sample/index.html refers to the folder then the .html'
 
 

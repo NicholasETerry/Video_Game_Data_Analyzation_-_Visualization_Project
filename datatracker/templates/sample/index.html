@@ -21,9 +21,6 @@
 <span> {{ letter }} </span>
 {% endif %}
 {% endfor %}
-{% for game in game_collection %}
-<span> {{ game.name }}<br/> </span>
-{% endfor %}
 <p>(Always remember to close off your ifs and your loops!)</p>
 <!--myChart = new Chart will through error unhandled exception unless below script is on this page-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
@@ -34,10 +31,12 @@
     const myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: [{% for platform in platform_collection%}
+        "{{platform}}",
+        {% endfor %}],
         datasets: [{
             label: 'Video Game Data',
-            data: [49,90,2,88,12],
+            data: [],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
