@@ -1,22 +1,34 @@
 from flask import Flask, jsonify, request, redirect, flash, render_template, url_for, Blueprint
 import requests, json
 from types import SimpleNamespace
-
+from datatracker.blue_prints.invest_in import Invest
 
 bp = Blueprint('videogame_blueprint', __name__)
 
+response = requests.get('https://api.dccresource.com/api/games')
+games = json.loads(response.content, object_hook=lambda d: SimpleNamespace(**d))
+invest = Invest.invest_results(games)
 
 @bp.route('/home')
 def test():
+
+    invest_collection = []
     game_collection = [] # create empty list
-    response = requests.get('https://api.dccresource.com/api/games')
-    games = json.loads(response.content, object_hook=lambda d: SimpleNamespace(**d))
+    platform_collection = [] # create empty list for unique platforms
+    print(games[0].platform)
+    for game in games: # this is appending only unique platforms to platform_collection list
+        if game.platform not in platform_collection:
+            platform_collection.append(game.platform)
+    print(platform_collection)
 
     for game in games:
-        if game.platform == "Wii" and game.year == 2007:
+        if game.platform == "SAT":
             game_collection.append(game) # add game to list if platform is Wii and year 2007
 
+
+
     return render_template('sample/index.html', game_collection=game_collection)
+    # 'sample/index.html refers to the folder then the .html'
 
 
 @bp.route('/invest') # see a data visualization of which video game console is best to invest in based on the number
