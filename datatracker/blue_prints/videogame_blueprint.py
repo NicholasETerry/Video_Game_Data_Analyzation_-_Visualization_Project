@@ -30,7 +30,8 @@ def test():
             platform_collection.append(game.platform)
 
     print(platform_collection) # for testing only. Will print consoles in platform_collection
-
+    testDic = search_by_game_name("Super Mario Bros.")
+    print(tuple(testDic))
     return render_template('sample/index.html', platform_collection=platform_collection, global_sales=global_sales)
     # 'sample/index.html refers to the folder then the .html'
 
@@ -49,10 +50,25 @@ def invest():
     return " Time to invest"
 
 
-@bp.route('/search') # be able to search for a game and see its details
+@bp.route('/search')  # be able to search for a game and see its details
 
 def search_by_game_name(game_name):
-    return " search for a game"
+
+    platform_list = []
+    sales_list = []
+    zipped_list = []
+
+
+    for game in searching:
+        if game.name == game_name:
+            platform_list.append(game.platform)
+            sales_list.append(game.globalSales)
+
+    zipped_list = zip(platform_list,sales_list)
+
+    return zipped_list
+    #  return render_template('sample/index.html', )
+    # 'sample/index.html refers to the folder then the .html'
 
 
 @bp.route('/custom') # custom search question
