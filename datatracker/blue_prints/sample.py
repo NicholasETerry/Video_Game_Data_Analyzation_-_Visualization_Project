@@ -15,6 +15,15 @@ def index():
     return render_template('sample/index.html', message=message, word=phrase)
 
 
+@bp.route('/newest')
+def chart():
+    labels: list[str] = ["Xbox","Playstation","wii","Playstation 2","Game cube","Nintendo 64","Saga Genesis","Atari"]
+    values = [10, 9, 8, 7, 6, 4, 7, 8]
+    return render_template('chart.html', values=values, labels=labels)
+
+
+
+
 @bp.route('/postform', methods=('GET', 'POST'))
 def other_example():
     if request.method == 'POST':
