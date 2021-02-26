@@ -12,5 +12,5 @@ class Invest:
             if str(game.year) != "None" and game.year > 2012:
                 invest_list.append(Invest(game.platform, game.year, game.globalSales))
 
-        g = len(invest_list)
+        testg = len(invest_list)  # test
         return invest_list

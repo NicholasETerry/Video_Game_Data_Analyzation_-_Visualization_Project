@@ -36,7 +36,9 @@
         {% endfor %}],
         datasets: [{
             label: 'Video Game Data',
-            data: [],
+            data: [{% for sales in global_sales%}
+            {{sales}},
+            {% endfor %}],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
