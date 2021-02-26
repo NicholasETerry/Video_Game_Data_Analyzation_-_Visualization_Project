@@ -15,6 +15,9 @@ def test():
 
     game_collection = []
     platform_collection = []
+    global_sales = [get_sales("PS3"), get_sales("X360"), get_sales("3DS"), get_sales("PS4"), get_sales("XOne"),
+                    get_sales("WiiU"), get_sales("Wii"), get_sales("PC"), get_sales("PSV"), get_sales("DS"),
+                    get_sales("PSP")]
 
     testg = len(games)  # test data - all games - returns 16598
     testgc = len(game_collection)  # test data - games that have years -  returns 16327
@@ -23,12 +26,18 @@ def test():
         if game.platform not in platform_collection:
             platform_collection.append(game.platform)
 
-    print(platform_collection)
+    print(platform_collection) # for testing only. Will print consoles in platform_collection
 
-    return render_template('sample/index.html', game_collection=game_collection, platform_collection=platform_collection)
+    return render_template('sample/index.html', platform_collection=platform_collection, global_sales=global_sales)
     # 'sample/index.html refers to the folder then the .html'
 
 
+def get_sales(platform):
+    sales_total = 0
+    for game in investing:
+        if platform == game.platform:
+            sales_total += game.globalSales
+    return sales_total
 @bp.route('/invest') # see a data visualization of which video game console is best to invest in based on the number
                      # of game copies sold globally on that console since 2013
 def invest():
