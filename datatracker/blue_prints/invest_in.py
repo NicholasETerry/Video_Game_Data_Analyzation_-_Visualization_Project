@@ -14,3 +14,4 @@ class Invest:
 
         testg = len(invest_list)  # test
         return invest_list
+

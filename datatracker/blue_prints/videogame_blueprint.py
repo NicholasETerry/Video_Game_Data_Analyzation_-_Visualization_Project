@@ -2,13 +2,16 @@ from flask import Flask, jsonify, request, redirect, flash, render_template, url
 import requests, json
 from types import SimpleNamespace
 from datatracker.blue_prints.invest_in import Invest
-
+from datatracker.blue_prints.search import Search
 bp = Blueprint('videogame_blueprint', __name__)
 
 response = requests.get('https://api.dccresource.com/api/games')
 games = json.loads(response.content, object_hook=lambda d: SimpleNamespace(**d))
 invest = Invest.invest_results(games)  # will not let me iterate over this
 investing = invest                     # but I can iterate over this
+new_search = Search.search_results(games)  # same as above, can't iterate over this
+searching = new_search                     # but I can iterate over this one
+
 
 @bp.route('/home')
 def test():
@@ -38,6 +41,8 @@ def get_sales(platform):
         if platform == game.platform:
             sales_total += game.globalSales
     return sales_total
+
+
 @bp.route('/invest') # see a data visualization of which video game console is best to invest in based on the number
                      # of game copies sold globally on that console since 2013
 def invest():
@@ -45,7 +50,8 @@ def invest():
 
 
 @bp.route('/search') # be able to search for a game and see its details
-def search():
+
+def search_by_game_name(game_name):
     return " search for a game"
 
 
