@@ -32,9 +32,7 @@ def test():
     # print(platform_collection)  # for testing only. Will print consoles in platform_collection
     # test_tup = search_by_game_name("Super Mario Bros.")  # for testing only
     # print(tuple(test_tup))  # for testing only - returns (('NES', 40.24), ('GB', 5.07))
-    x = platform_collection
-    y = global_sales
-    return render_template('sample/index.html', x=x, y=y)
+    return render_template('sample/index.html', x=platform_collection, y=global_sales)
     # 'sample/index.html refers to the folder then the .html'
 
 
@@ -54,36 +52,35 @@ def invest():
 
 
 @bp.route('/search', methods=('GET', 'POST'))  # be able to search for a game and see its details
-def search_by_game_name(game_name):
+def search_by_game_name():
 
     platform_list = []
     sales_list = []
 
     if request.method == 'POST':
-        page_title = request.form['title']
+        game_name = request.form['name']
         error = None
+        for game in searching:
+            if game.name == game_name:
+                platform_list.append(game.platform)
+                sales_list.append(game.globalSales)
 
-        if not page_title:
+        if not game_name:
             error = 'You must enter a title'
 
         if error is not None:
             flash(error)
-        elif request.form['title'] == "go home":
+        elif request.form['name'] == "go home":
             return redirect(url_for('sample.index'))
         else:
-            return render_template('sample/postform.html', page_title=page_title)
+            return render_template('sample/index.html', x=platform_list, y=sales_list)
 
     else:
-        return render_template('sample/postform.html', page_title="PostForm from Module Function")
+        return render_template('sample/index.html', page_title="PostForm from Module Function")
 
-    for game in searching:
-        if game.name == game_name:
-            platform_list.append(game.platform)
-            sales_list.append(game.globalSales)
 
-    zipped_list = zip(platform_list, sales_list)  # creates a tuple of platform_list and sales_list
+    # zipped_list = zip(platform_list, sales_list)  # creates a tuple of platform_list and sales_list
 
-    return zipped_list
     #  return render_template('sample/index.html', )
     # 'sample/index.html refers to the folder then the .html'
 

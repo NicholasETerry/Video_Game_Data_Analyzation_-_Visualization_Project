@@ -22,6 +22,11 @@
 {% endif %}
 {% endfor %}
 <p>(Always remember to close off your ifs and your loops!)</p>
+  <form method="post">
+    <label for="name">Search for a game</label>
+    <input name="name" id="name" value="{{ request.form['name'] }}" required>
+    <input type="submit" value="Submit">
+  </form>
 <!--myChart = new Chart will through error unhandled exception unless below script is on this page-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
