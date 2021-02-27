@@ -15,25 +15,28 @@ searching = new_search                     # but I can iterate over this one
 
 @bp.route('/home')
 def test():
-
     game_collection = []
     platform_collection = []
     global_sales = [get_sales("PS3"), get_sales("X360"), get_sales("3DS"), get_sales("PS4"), get_sales("XOne"),
                     get_sales("WiiU"), get_sales("Wii"), get_sales("PC"), get_sales("PSV"), get_sales("DS"),
                     get_sales("PSP")]
 
-    testg = len(games)  # test data - all games - returns 16598
-    testgc = len(game_collection)  # test data - games that have years -  returns 16327
+    # testg = len(games)  # test data - all games - returns 16598
+    # testgc = len(game_collection)  # test data - games that have years -  returns 16327
+    # testi = len(Invest.no_year(games)) # test data - prints to console all games that year is null - returns len 271
 
-    for game in investing: # this is appending only unique platforms to platform_collection list
+    for game in investing:  # this is appending only unique platforms to platform_collection list
         if game.platform not in platform_collection:
             platform_collection.append(game.platform)
 
-    print(platform_collection) # for testing only. Will print consoles in platform_collection
-    testDic = search_by_game_name("Super Mario Bros.")
-    print(tuple(testDic))
-    return render_template('sample/index.html', platform_collection=platform_collection, global_sales=global_sales)
+    # print(platform_collection)  # for testing only. Will print consoles in platform_collection
+    # test_tup = search_by_game_name("Super Mario Bros.")  # for testing only
+    # print(tuple(test_tup))  # for testing only - returns (('NES', 40.24), ('GB', 5.07))
+    x = platform_collection
+    y = global_sales
+    return render_template('sample/index.html', x=x, y=y)
     # 'sample/index.html refers to the folder then the .html'
+
 
 
 def get_sales(platform):
@@ -44,34 +47,48 @@ def get_sales(platform):
     return sales_total
 
 
-@bp.route('/invest') # see a data visualization of which video game console is best to invest in based on the number
-                     # of game copies sold globally on that console since 2013
+@bp.route('/invest')  # see a data visualization of which video game console is best to invest in based on the number
+                      # of game copies sold globally on that console since 2013
 def invest():
     return " Time to invest"
 
 
-@bp.route('/search')  # be able to search for a game and see its details
-
+@bp.route('/search', methods=('GET', 'POST'))  # be able to search for a game and see its details
 def search_by_game_name(game_name):
 
     platform_list = []
     sales_list = []
-    zipped_list = []
 
+    if request.method == 'POST':
+        page_title = request.form['title']
+        error = None
+
+        if not page_title:
+            error = 'You must enter a title'
+
+        if error is not None:
+            flash(error)
+        elif request.form['title'] == "go home":
+            return redirect(url_for('sample.index'))
+        else:
+            return render_template('sample/postform.html', page_title=page_title)
+
+    else:
+        return render_template('sample/postform.html', page_title="PostForm from Module Function")
 
     for game in searching:
         if game.name == game_name:
             platform_list.append(game.platform)
             sales_list.append(game.globalSales)
 
-    zipped_list = zip(platform_list,sales_list)
+    zipped_list = zip(platform_list, sales_list)  # creates a tuple of platform_list and sales_list
 
     return zipped_list
     #  return render_template('sample/index.html', )
     # 'sample/index.html refers to the folder then the .html'
 
 
-@bp.route('/custom') # custom search question
+@bp.route('/custom')  # custom search question
 def custom_search():
     return " custom search please"
 
