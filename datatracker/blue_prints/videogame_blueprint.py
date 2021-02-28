@@ -107,7 +107,45 @@ def get_details_of_game():
         return render_template('sample/index.html', page_title="PostForm from Module Function")
 
 
-@bp.route('/custom')  # custom search question
+@bp.route('/custom')  # which genre is most popular per region
 def custom_search():
-    return " custom search please"
+    game_return = []
+    most_pop(genre_finder())
+    if request.method == 'POST':
+        custom = request.form['custom']
+        error = None
+        if error is not None:
+            flash(error)
+        else:
+            return render_template('sample/index.html',)
 
+    else:
+        return render_template('sample/index.html', page_title="PostForm from Module Function")
+
+
+def genre_finder():
+    genre_list = []
+    for game in game_collection:
+        if game.genre not in genre_list:
+            genre_list.append(game.genre)
+    return genre_list
+
+
+def most_pop(list_of_genres):
+    totals = [[] for genre in list_of_genres]
+    north_america_sales = 0
+    europe_sales = 0
+    japan_sales = 0
+    i = 0
+    while i != len(list_of_genres) - 1:
+        for game in game_collection:
+            if list_of_genres[i] == game.genre:
+                north_america_sales += game.naSales
+                europe_sales += game.euSales
+                japan_sales += game.jpSales
+        totals[i].append(north_america_sales)
+        totals[i].append(europe_sales)
+        totals[i].append(japan_sales)
+        i += 1
+    print(totals)
+    return totals
