@@ -27,6 +27,14 @@
     <input name="name" id="name" value="{{ request.form['name'] }}" required>
     <input type="submit" value="Submit">
   </form>
+  <form method="post">
+    <label for="game">Search for a games details</label>
+    <input name="game" id="game" value="{{ request.form['game'] }}" required>
+    <input type="submit" value="Submit">
+    {%for item in game_return%}
+    <div>{{item}}}</div>
+    {%endfor%}
+  </form>
 <!--myChart = new Chart will through error unhandled exception unless below script is on this page-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
@@ -40,7 +48,7 @@
         "{{item}}",
         {% endfor %}],
         datasets: [{
-            label: 'Video Game Data',
+            label: '{{chart_title}}',
             data: [{% for item in y%}
             {{item}},
             {% endfor %}],
