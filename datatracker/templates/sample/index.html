@@ -22,22 +22,40 @@
 {% endif %}
 {% endfor %}
 <p>(Always remember to close off your ifs and your loops!)</p>
+  <form method="post">
+    <label for="name">Search for a game</label>
+    <input name="name" id="name" value="{{ request.form['name'] }}" required>
+    <input type="submit" value="Submit">
+  </form>
+  <form method="post">
+    <label for="game">Search for a games details</label>
+    <input name="game" id="game" value="{{ request.form['game'] }}" required>
+    <input type="submit" value="Submit">
+    {%for item in game_return%}
+    <div>{{item}}}</div>
+    {%endfor%}
+  </form>
+  <form method="post">
+    <label for="custom">Most pop genre per area</label>
+    <input name="custom" id="custom" value="{{ request.form['custom'] }}" required>
+    <a href="{{ url_for('videogame_blueprint.custom_search') }}"> <input type="submit" value="Submit"> </a>
+  </form>
 <!--myChart = new Chart will through error unhandled exception unless below script is on this page-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
-
+<script>Chart.defaults.global.elements.rectangle.borderWidth = 2;</script>
 <canvas id="myChart" width="400" height="200"></canvas>
 <script>
     const ctx = document.getElementById('myChart').getContext('2d');
     const myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: [{% for platform in platform_collection%}
-        "{{platform}}",
+        labels: [{% for item in x%}
+        "{{item}}",
         {% endfor %}],
         datasets: [{
-            label: 'Video Game Data',
-            data: [{% for sales in global_sales%}
-            {{sales}},
+            label: '{{label}}',
+            data: [{% for item in y%}
+            {{item}},
             {% endfor %}],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -45,7 +63,12 @@
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)'
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
@@ -53,7 +76,12 @@
                 'rgba(255, 206, 86, 1)',
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)'
             ],
             borderWidth: 1
         }]
@@ -61,13 +89,19 @@
     options: {
         scales: {
             yAxes: [{
-                ticks: {
-                    beginAtZero: true
+                gridLines: {
+                  display: false
+                }
+            }],
+            xAxes: [{
+                gridLines: {
+                  display: false
                 }
             }]
         }
     }
 });
+console.log(myChart)
 </script>
 <a href="{{ url_for('sample.other_example') }}"> Next Page </a>
 {% endblock %}
