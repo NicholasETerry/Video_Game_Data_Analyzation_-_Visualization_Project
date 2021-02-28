@@ -16,7 +16,7 @@ usable = Details.usable_games(games)    # ''
 game_collection = usable                # ''
 
 
-@bp.route('/home')
+@bp.route('/home', methods=("GET", "POST"))
 def test():
     label = "Video Game Data"
     plt_col = []
@@ -28,14 +28,13 @@ def test():
     global_sales = [get_sales(plt_col[0]), get_sales(plt_col[1]), get_sales(plt_col[2]), get_sales(plt_col[3]),
                     get_sales(plt_col[4]), get_sales(plt_col[5]), get_sales(plt_col[6]), get_sales(plt_col[7]),
                     get_sales(plt_col[8]), get_sales(plt_col[9]), get_sales(plt_col[10])]
-
     # test_g = len(games)  # test data - all games - returns 16598
     # test_gc = len(game_collection)  # test data - games that have years -  returns 16327
     # test_i = len(Invest.no_year(games)) # test data - prints to console all games that year is null - returns len 271
     # print(plt_col)  # for testing only. Will print consoles in platform_collection
     # test_tup = search_by_game_name("Super Mario Bros.")  # for testing only
     # print(tuple(test_tup))  # for testing only - returns (('NES', 40.24), ('GB', 5.07))
-    return render_template('sample/index.html', x=plt_col, y=global_sales, label=label)
+    return render_template('sample/index.html', x=plt_col, y=global_sales, label=label,)
     # 'sample/index.html refers to the folder then the .html'
 
 
