@@ -35,7 +35,11 @@
     <div>{{item}}}</div>
     {%endfor%}
   </form>
-
+  <form method="post">
+    <label for="custom">Most pop genre per area</label>
+    <input name="custom" id="custom" value="{{ request.form['custom'] }}" required>
+    <input type="submit" value="Submit">
+  </form>
 <!--myChart = new Chart will through error unhandled exception unless below script is on this page-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
@@ -49,7 +53,7 @@
         "{{item}}",
         {% endfor %}],
         datasets: [{
-            label: '{{chart_title}}',
+            label: '{{label}}',
             data: [{% for item in y%}
             {{item}},
             {% endfor %}],

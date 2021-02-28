@@ -18,7 +18,7 @@ game_collection = usable                # ''
 
 @bp.route('/home')
 def test():
-    title = "Video Game Data"
+    label = "Video Game Data"
     plt_col = []
 
     for game in investing:  # this is appending only unique platforms to platform_collection list
@@ -35,7 +35,7 @@ def test():
     # print(plt_col)  # for testing only. Will print consoles in platform_collection
     # test_tup = search_by_game_name("Super Mario Bros.")  # for testing only
     # print(tuple(test_tup))  # for testing only - returns (('NES', 40.24), ('GB', 5.07))
-    return render_template('sample/index.html', x=plt_col, y=global_sales, chart_title=title)
+    return render_template('sample/index.html', x=plt_col, y=global_sales, label=label)
     # 'sample/index.html refers to the folder then the .html'
 
 
@@ -45,12 +45,6 @@ def get_sales(platform):
         if platform == game.platform:
             sales_total += game.globalSales
     return sales_total
-
-
-@bp.route('/invest')  # see a data visualization of which video game console is best to invest in based on the number
-# of game copies sold globally on that console since 2013
-def invest():
-    return " Time to invest"
 
 
 @bp.route('/search', methods=('GET', 'POST'))  # be able to search for a game and see its details
@@ -66,14 +60,14 @@ def search_by_game_name():
                 platform_list.append(game.platform)
                 sales_list.append(game.globalSales)
 
-        title = game_name + ": Global Sales / Platform"
+        label = game_name + ": Global Sales / Platform"
         if not game_name:
             error = 'You must enter a title'
 
         if error is not None:
             flash(error)
         else:
-            return render_template('sample/index.html', x=platform_list, y=sales_list, chart_title=title)
+            return render_template('sample/index.html', x=platform_list, y=sales_list, lable=label)
 
     else:
         return render_template('sample/index.html', page_title="PostForm from Module Function")
@@ -94,30 +88,34 @@ def get_details_of_game():
                 print(game)
                 game_return.append(game)  # returns the attributes of a game but needs cleaning up
 
-        title = game_detail + ": Global Sales / Platform"
+        label = game_detail + ": Global Sales / Platform"
         if not game_detail:
             error = 'You must enter a title'
 
         if error is not None:
             flash(error)
         else:
-            return render_template('sample/index.html', game=game_detail, game_return=game_return)
+            return render_template('sample/index.html', game=game_detail, game_return=game_return, label=label)
 
     else:
         return render_template('sample/index.html', page_title="PostForm from Module Function")
 
 
-@bp.route('/custom')  # which genre is most popular per region
+@bp.route('/custom', methods=("GET", "POST"))  # which genre is most popular per region
 def custom_search():
+    sales_territories = ["North America", "Europe", "Japan"]
     game_return = []
-    most_pop(genre_finder())
+
     if request.method == 'POST':
         custom = request.form['custom']
         error = None
+        index_value = genre_finder().index(custom)
+        pop_list = most_pop(genre_finder())[index_value]  # Im proud of this !!!!!
+        label = custom
         if error is not None:
             flash(error)
         else:
-            return render_template('sample/index.html',)
+            return render_template('sample/index.html', y=pop_list, x=sales_territories, label=label)
 
     else:
         return render_template('sample/index.html', page_title="PostForm from Module Function")
@@ -147,5 +145,5 @@ def most_pop(list_of_genres):
         totals[i].append(europe_sales)
         totals[i].append(japan_sales)
         i += 1
-    print(totals)
+    # print(totals) for testing only
     return totals
