@@ -117,6 +117,25 @@ def custom_search():
     else:
         return render_template('sample/custom.html', page_title="PostForm from Module Function")
 
+@bp.route('/nonadjusted', methods=("GET", "POST"))
+def custom_search_non():
+    sales_territories = ["North America", "Europe", "Japan"]
+    game_return = []
+
+    if request.method == 'POST':
+        custom = request.form['custom']
+        error = None
+        index_value = genre_finder().index(custom)
+        pop_list = most_pop_non(genre_finder())[index_value]
+        label = custom
+        if error is not None:
+            flash(error)
+        else:
+            return render_template('sample/custom.html', y=pop_list, x=sales_territories, label=label)
+
+    else:
+        return render_template('sample/custom.html', page_title="PostForm from Module Function")
+
 
 def genre_finder():
     genre_list = []
@@ -141,6 +160,26 @@ def most_pop(list_of_genres):
         totals[i].append(north_america_sales * 1.27979)  # North American population 579 million people
         totals[i].append(europe_sales * 1)  # europe population 741 million people
         totals[i].append(japan_sales * 5.88095)  # japan population 126 million people
+        i += 1
+    # print(totals) for testing only
+    return totals
+
+
+def most_pop_non(list_of_genres):
+    totals = [[] for genre in list_of_genres]
+    north_america_sales = 0
+    europe_sales = 0
+    japan_sales = 0
+    i = 0
+    while i != len(list_of_genres) - 1:
+        for game in game_collection:
+            if list_of_genres[i] == game.genre:
+                north_america_sales += game.naSales
+                europe_sales += game.euSales
+                japan_sales += game.jpSales
+        totals[i].append(north_america_sales)
+        totals[i].append(europe_sales)
+        totals[i].append(japan_sales)
         i += 1
     # print(totals) for testing only
     return totals

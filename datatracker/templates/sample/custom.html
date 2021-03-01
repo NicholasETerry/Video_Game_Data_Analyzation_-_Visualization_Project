@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<h1 style="text-align: center">{% block title %} Most Popular Genre Per Region  {% endblock %}</h1>
+<h1 style="text-align: center">{% block title %} Most Popular Genre Per Region   {% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
@@ -76,4 +76,6 @@
 });
 </script>
 <a href="{{ url_for('videogame_blueprint.test') }}"> Next Page </a>
+<a href="{{ url_for('videogame_blueprint.custom_search') }}"> Adjusted Search </a>
+<a href="{{ url_for('videogame_blueprint.custom_search_non') }}"> Non-Adjusted Search </a>
 {% endblock %}
