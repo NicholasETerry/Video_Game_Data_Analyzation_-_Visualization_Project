@@ -46,7 +46,7 @@ def get_sales(platform):
     return sales_total
 
 
-@bp.route('/search', methods=('GET', 'POST'))  # be able to search for a game and see its details
+@bp.route('/search', methods=('GET', 'POST'))
 def search_by_game_name():
 
     platform_list = []
@@ -66,17 +66,17 @@ def search_by_game_name():
         if error is not None:
             flash(error)
         else:
-            return render_template('sample/index.html', x=platform_list, y=sales_list, lable=label)
+            return render_template('sample/search.html', x=platform_list, y=sales_list, lable=label)
 
     else:
-        return render_template('sample/index.html', page_title="PostForm from Module Function")
+        return render_template('sample/search.html', page_title="PostForm from Module Function")
 
     # zipped_list = zip(platform_list, sales_list)  # creates a tuple of platform_list and sales_list
     #  return render_template('sample/index.html', )
     # 'sample/index.html refers to the folder then the .html'
 
 
-@bp.route('/search/details', methods=("GET", "POST"))
+@bp.route('/details', methods=("GET", "POST"))
 def get_details_of_game():
     game_return = []
     if request.method == 'POST':
@@ -94,10 +94,10 @@ def get_details_of_game():
         if error is not None:
             flash(error)
         else:
-            return render_template('sample/index.html', game=game_detail, game_return=game_return, label=label)
+            return render_template('sample/details.html', game=game_detail, game_return=game_return, label=label)
 
     else:
-        return render_template('sample/index.html', page_title="PostForm from Module Function")
+        return render_template('sample/details.html', page_title="PostForm from Module Function")
 
 
 @bp.route('/custom', methods=("GET", "POST"))  # which genre is most popular per region
@@ -114,10 +114,10 @@ def custom_search():
         if error is not None:
             flash(error)
         else:
-            return render_template('sample/index.html', y=pop_list, x=sales_territories, label=label)
+            return render_template('sample/custom.html', y=pop_list, x=sales_territories, label=label)
 
     else:
-        return render_template('sample/index.html', page_title="PostForm from Module Function")
+        return render_template('sample/custom.html', page_title="PostForm from Module Function")
 
 
 def genre_finder():
@@ -140,9 +140,9 @@ def most_pop(list_of_genres):
                 north_america_sales += game.naSales
                 europe_sales += game.euSales
                 japan_sales += game.jpSales
-        totals[i].append(north_america_sales)
-        totals[i].append(europe_sales)
-        totals[i].append(japan_sales)
+        totals[i].append(north_america_sales * 1.27979)  # North American population 579 million people
+        totals[i].append(europe_sales * 1)  # europe population 741 million people
+        totals[i].append(japan_sales * 5.88095)  # japan population 126 million people
         i += 1
     # print(totals) for testing only
     return totals
