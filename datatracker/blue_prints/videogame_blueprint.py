@@ -6,22 +6,22 @@ from datatracker.blue_prints.search import Search
 from datatracker.blue_prints.details import Details
 bp = Blueprint('videogame_blueprint', __name__)
 
-response = requests.get('https://api.dccresource.com/api/games') # if i have time, create a class to call this and below
+response = requests.get('https://api.dccresource.com/api/games')
 games = json.loads(response.content, object_hook=lambda d: SimpleNamespace(**d))
-invest = Invest.invest_results(games)  # will not let me iterate over this
-investing = invest                     # but I can iterate over this
-new_search = Search.search_results(games)  # same as above, can't iterate over this
-searching = new_search                     # but I can iterate over this one
-usable = Details.usable_games(games)    # ''
-game_collection = usable                # ''
+invest = Invest.invest_results(games)
+investing = invest
+new_search = Search.search_results(games)
+searching = new_search
+usable = Details.usable_games(games)
+game_collection = usable
 
 
 @bp.route('/home', methods=("GET", "POST"))
 def test():
-    label = "Video Game Data"
+    label = "Total Global Video Games Sales Per Platform Since 2013"
     plt_col = []
 
-    for game in investing:  # this is appending only unique platforms to platform_collection list
+    for game in investing:
         if game.platform not in plt_col:
             plt_col.append(game.platform)
 
@@ -35,7 +35,7 @@ def test():
     # test_tup = search_by_game_name("Super Mario Bros.")  # for testing only
     # print(tuple(test_tup))  # for testing only - returns (('NES', 40.24), ('GB', 5.07))
     return render_template('sample/index.html', x=plt_col, y=global_sales, label=label,)
-    # 'sample/index.html refers to the folder then the .html'
+
 
 
 def get_sales(platform):
@@ -72,8 +72,6 @@ def search_by_game_name():
         return render_template('sample/search.html', page_title="PostForm from Module Function")
 
     # zipped_list = zip(platform_list, sales_list)  # creates a tuple of platform_list and sales_list
-    #  return render_template('sample/index.html', )
-    # 'sample/index.html refers to the folder then the .html'
 
 
 @bp.route('/details', methods=("GET", "POST"))
@@ -100,7 +98,7 @@ def get_details_of_game():
         return render_template('sample/details.html', page_title="PostForm from Module Function")
 
 
-@bp.route('/custom', methods=("GET", "POST"))  # which genre is most popular per region
+@bp.route('/custom', methods=("GET", "POST"))
 def custom_search():
     sales_territories = ["North America", "Europe", "Japan"]
     game_return = []
@@ -109,7 +107,7 @@ def custom_search():
         custom = request.form['custom']
         error = None
         index_value = genre_finder().index(custom)
-        pop_list = most_pop(genre_finder())[index_value]  # Im proud of this !!!!!
+        pop_list = most_pop(genre_finder())[index_value]
         label = custom
         if error is not None:
             flash(error)

@@ -1,17 +1,49 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<h1 style="text-align: center">{% block title %} VideoGame Archives {% endblock %}</h1>
+<h1 style="text-align: center">{% block title %} Details For A Selected Video Game {% endblock %}</h1>
 {% endblock %}
-<!--make a table for this-->
 {% block content %}
   <form method="post">
     <label for="game">Search for a games details</label>
     <input name="game" id="game" value="{{ request.form['game'] }}" required>
     <input type="submit" value="Submit">
-    {%for item in game_return%}
-    <div>{{item}}}</div>
-    {%endfor%}
+    <table>
+      <thead >
+        <tr>
+          <th style="text-align: center">ID</th>
+          <th style="text-align: center">Rank</th>
+          <th style="text-align: center">Name</th>
+          <th style="text-align: center">Platform</th>
+          <th style="text-align: center">Year</th>
+          <th style="text-align: center">Genre</th>
+          <th style="text-align: center">Publisher</th>
+          <th style="text-align: center">North American Sales</th>
+          <th style="text-align: center">European Sales</th>
+          <th style="text-align: center">Japanese Sales</th>
+          <th style="text-align: center">Other Sales</th>
+          <th style="text-align: center">Global Sales</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for item in game_return %}
+              <tr>
+                <td style="text-align: center">{{item._id}}</td>
+                <td style="text-align: center">{{item.rank}}</td>
+                <td style="text-align: center">{{item.name}}</td>
+                <td style="text-align: center">{{item.platform}}</td>
+                <td style="text-align: center">{{item.year}}</td>
+                <td style="text-align: center">{{item.genre}}</td>
+                <td style="text-align: center">{{item.publisher}}</td>
+                <td style="text-align: center">{{item.naSales}}</td>
+                <td style="text-align: center">{{item.euSales}}</td>
+                <td style="text-align: center">{{item.jpSales}}</td>
+                <td style="text-align: center">{{item.otherSales}}</td>
+                <td style="text-align: center">{{item.globalSales}}</td>
+                {%endfor%}
+              </tr>
+      </tbody>
+    </table>
   </form>
-<a href="{{ url_for('sample.other_example') }}"> Next Page </a>
+<a href="{{ url_for('videogame_blueprint.custom_search') }}"> Next Page </a>
 {% endblock %}

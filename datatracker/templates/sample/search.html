@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<h1 style="text-align: center">{% block title %} Search for a game, then see it's sales per Platform {% endblock %}</h1>
+<h1 style="text-align: center">{% block title %} Global Sales For Each Platform Per Selected Game {% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
@@ -11,7 +11,7 @@
     <input type="submit" value="Submit">
   </form>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
-<canvas id="myChart" width="400" height="200"></canvas>
+<canvas id="myChart" width="1500" height="750"></canvas>
 <script>
     const ctx = document.getElementById('myChart').getContext('2d');
     const myChart = new Chart(ctx, {
@@ -55,6 +55,11 @@
         }]
     },
     options: {
+                legend: {
+            display: false
+        },
+        responsive: false,
+        maintainAspectRatio: false,
         scales: {
             yAxes: [{
                 gridLines: {
@@ -71,5 +76,5 @@
 });
 console.log(myChart)
 </script>
-<a href="{{ url_for('sample.other_example') }}"> Next Page </a>
+<a href="{{ url_for('videogame_blueprint.get_details_of_game') }}"> Next Page </a>
 {% endblock %}
